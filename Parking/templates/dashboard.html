@@ -1,0 +1,219 @@
+{% extends 'index.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+ 
+  
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div id="card-container" class="card border-secondary mb-3">
+          <div class="card-header">
+            <h4 class="card-title text-center">
+              <div class="dropdown">
+                <button class="btn btn-lg btn-outline-secondary dropdown-toggle" type="button" id="mall-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Mall
+                </button>
+                <div class="dropdown-menu" aria-labelledby="mall-dropdown">
+                  <a class="dropdown-item" href="#" data-mall-id="1">Mall 1</a>
+                  <a class="dropdown-item" href="#" data-mall-id="2">Mall 2</a>
+                  <a class="dropdown-item" href="#" data-mall-id="3">Mall 3</a>
+                </div>
+              </div>
+            </h4>
+          </div>
+          <div class="card-body text-secondary">
+            <div class="row">
+              <div class="col-md-6">
+                <h5 class="card-title">Current Status :</h5>
+                <hr>
+                <p class="card-text">Available Slots: <span id="available-slots" class="font-weight-bold">0</span></p>
+                <p class="card-text">Occupied Slots: <span id="occupied-slots" class="font-weight-bold">0</span></p>
+                <p class="card-text">Total Slots: <span id="total-slots" class="font-weight-bold">0</span></p>
+              </div>
+              <div class="col-md-6">
+                <div id="chart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div id="second-card" class="card border-secondary mb-3">
+          
+          <div class="card-body text-secondary">
+  
+              <div class="table-responsive">
+                <table class="table  align-middle mb-0" id="data-table">
+                <thead>
+                  <tr>                
+                      <th>Floor</th>
+                      <th>Slots Available</th>
+                      <th>Slots Occupied</th>
+                      <th>Slots Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+                       </table>
+                   </div>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+   
+     
+      <script>
+        // Get the dropdown element
+        // Get the card container element
+       const cardContainer = document.querySelector("#card-container");
+       
+       // Get all the dropdown items
+       const dropdownItems = cardContainer.querySelectorAll(".dropdown-item");
+       
+       // Add click event listener to each dropdown item
+       dropdownItems.forEach(function(item) {
+         item.addEventListener("click", function(event) {
+           // Get the mall name from the clicked item
+           const mallName = event.target.textContent;
+           
+           // Update the dropdown button text with the mall name
+           const dropdownButton = cardContainer.querySelector(".dropdown-toggle");
+           dropdownButton.textContent = mallName;
+         });
+       });
+       </script>
+       
+       
+  
+
+
+
+    
+    
+    <script>
+      
+      // Create chart object and store it in a variable
+      var data = {};
+      var color;
+      
+      if (data.occupied_slots * 100 / data.total_slots < 50) {
+      color = '#DC3545'; // shade of green color
+      } else {
+  color = '#28A745'; // shade of red color
+    }
+    var chart = new ApexCharts(document.querySelector('#chart'), {
+                
+                        chart: {
+                          type: 'radialBar',
+                          offsetY: -30,
+                          height: 250
+                        },
+                        plotOptions: {
+                          radialBar: {
+                            startAngle: -135,
+                            endAngle: 135,
+                            hollow: {
+                              margin: 0,
+                              size: '70%',
+                              background: '#fff',
+                              image: undefined,
+                              imageOffsetX: 0,
+                              imageOffsetY: 0,
+                              position: 'front',
+                              dropShadow: {
+                                enabled: true,
+                                top: 3,
+                                left: 0,
+                                blur: 4,
+                                opacity: 0.24
+                              }
+                            },
+                            track: {
+                              background: '#fff',
+                              strokeWidth: '67%',
+                              margin: 0,
+                              dropShadow: {
+                                enabled: true,
+                                top: -3,
+                                left: 0,
+                                blur: 4,
+                                opacity: 0.35
+                              }
+                            },
+                            dataLabels: {
+                              showOn: 'always',
+                              name: {
+                                offsetY: -10,
+                                show: true,
+                                color: '#888',
+                                fontSize: '18px'
+                              },
+                              
+                              value: {
+                                formatter: function(val) {
+                                  if (isNaN(val)) {
+                                    return "Please select a mall";
+                                  } else {
+                                    return Math.round(val) + '%';
+                                  }
+                                },
+                                color: '#111',
+                                fontSize: '14px',
+                                show: true
+                              }
+                            }
+                          }
+                        },
+                        fill: {
+                          type: 'gradient',
+                          gradient: {
+                          shade: 'dark',
+                          type: 'horizontal',
+                          shadeIntensity: 0.5,
+                          gradientToColors: [color], // Set color based on condition
+                          inverseColors: true,
+                          opacityFrom: 1,
+                          opacityTo: 1,
+                          stops: [0, 100]
+                          }
+                        },
+                        series: [data.occupied_slots * 100 / data.total_slots],
+                        stroke: {
+                          lineCap: 'round',
+                          dropShadow: {
+                            enabled: true,
+                            top: 3,
+                            left: 0,
+                            blur: 4,
+                            opacity: 0.24
+                          }
+                        },
+                        labels: ['Occupied']
+                      });
+    
+          chart.render();
+    
+      
+    
+      
+    </script>
+
+    <script src="{{ url_for('static', filename='js/fetch-data.js') }}"></script>
+  
+
+    
+       
+    
+    
+  </body>
+  <!-- add your dashboard content here -->
+{% endblock %}

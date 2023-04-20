@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.navbar {
+    background-color: #95BDFF;
+
+}
+
+.navbar-item>li>a {
+    color: black;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    margin-bottom: -10px;
+
+}
+
+.navbar-header>a {
+    font-weight: bolder;
+    color: black;
+}
+
+.navbar-nav>li.active>a {
+    background-color: #DFFFD8;
+    color: black;
+    border-radius: 10px;
+    margin-bottom: 0;
+}
+
+#card-container {
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.card-header {
+    background-color: #F5EBE0;
+    /* a shade of 95BDFF */
+    color: white;
+    /* set text color to white for better visibility */
+}
+
+.card-body {
+    background-color: white;
+    /* a lighter shade of 95BDFF */
+}
+
+#mall-dropdown {
+    background-color: #F0DBDB;
+}
+
+#second-card {
+    margin-top: 30px;
+}
